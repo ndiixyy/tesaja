@@ -1,0 +1,2481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xentrix Project - Role APK Xentrix</title>
+  <!-- Script Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+  <style>
+    :root {
+      --bg-yellow: #ffe600;
+      --bg-yellow-soft: #fff275;
+      --ink-black: #0a0a0a;
+      --card-white: #ffffff;
+      --terminal-dark: #072219;
+      --terminal-border: #10b981;
+      --accent-blue: #2563eb;
+      --accent-blue-hover: #1d4ed8;
+      --text-main: #0a0a0a;
+      --text-muted: #4b5563;
+      --success: #059669;
+      --success-bright: #10b981;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --wa-green: #25d366;
+      --shadow-hard: 4px 4px 0px #0a0a0a;
+      --shadow-hard-sm: 2.5px 2.5px 0px #0a0a0a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-yellow);
+      background-image: radial-gradient(rgba(10, 10, 10, 0.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      color: var(--text-main);
+      padding: 14px 16px 115px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========================================================= */
+    /* DESAIN HALAMAN LOGIN & REGISTER (NEO-BRUTALISM KUNING)    */
+    /* ========================================================= */
+    #auth-screen {
+      display: none;
+      margin: auto 0;
+      width: 100%;
+      max-width: 440px;
+      align-self: center;
+    }
+
+    .auth-card {
+      background: var(--card-white);
+      border: 2.5px solid var(--ink-black);
+      border-radius: 18px;
+      padding: 26px 22px;
+      box-shadow: var(--shadow-hard);
+      position: relative;
+    }
+
+    .auth-logo-box {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 12px;
+      border-radius: 14px;
+      background: var(--bg-yellow);
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-black);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .auth-header h2 {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      color: var(--ink-black);
+      margin-bottom: 4px;
+    }
+
+    .auth-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #f3f4f6;
+      padding: 5px;
+      border-radius: 12px;
+      border: 2px solid var(--ink-black);
+      margin-bottom: 18px;
+    }
+
+    .auth-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 9px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab-btn.active {
+      background: var(--bg-yellow);
+      color: var(--ink-black);
+      border: 2px solid var(--ink-black);
+      box-shadow: 2px 2px 0px var(--ink-black);
+    }
+
+    .auth-field {
+      margin-bottom: 14px;
+    }
+
+    .auth-field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink-black);
+      margin-bottom: 6px;
+    }
+
+    .input-icon-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon-left {
+      position: absolute;
+      left: 13px;
+      color: #4b5563;
+      display: flex;
+      pointer-events: none;
+    }
+
+    .input-icon-wrap input {
+      width: 100%;
+      padding: 11px 40px 11px 40px;
+      border-radius: 10px;
+      border: 2px solid var(--ink-black);
+      background: #ffffff;
+      color: var(--ink-black);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .input-icon-wrap input:focus {
+      outline: none;
+      background: #fefce8;
+      box-shadow: var(--shadow-hard-sm);
+    }
+
+    .toggle-pw-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #4b5563;
+      cursor: pointer;
+      display: flex;
+      padding: 4px;
+    }
+
+    .pw-strength-wrap {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pw-strength-bar {
+      flex: 1;
+      height: 5px;
+      background: #e5e7eb;
+      border: 1px solid var(--ink-black);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .pw-strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    .pw-strength-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .cf-security-box {
+      margin: 14px 0;
+      display: flex;
+      justify-content: center;
+      min-height: 64px;
+    }
+
+    .cf-fallback-widget {
+      width: 100%;
+      background: #f9fafb;
+      border: 2px solid var(--ink-black);
+      border-radius: 10px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .cf-check-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .cf-checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--ink-black);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .cf-checkbox.verified {
+      background: var(--success-bright);
+      color: white;
+    }
+
+    .cf-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2.5px solid var(--ink-black);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .cf-brand-right {
+      text-align: right;
+    }
+
+    .cf-brand-right span {
+      display: block;
+      font-size: 10px;
+      font-weight: 800;
+      color: #d97706;
+    }
+
+    .cf-brand-right small {
+      font-size: 9px;
+      color: #4b5563;
+    }
+
+    .btn-auth-submit {
+      width: 100%;
+      padding: 13px;
+      border-radius: 11px;
+      border: 2px solid var(--ink-black);
+      font-weight: 800;
+      font-size: 14.5px;
+      color: #ffffff;
+      cursor: pointer;
+      background: var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      transition: transform 0.12s;
+    }
+
+    .btn-auth-submit:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    .btn-auth-submit:disabled {
+      background: #6b7280;
+      cursor: not-allowed;
+    }
+
+    .btn-auth-register {
+      background: var(--success);
+    }
+
+    /* ========================================================= */
+    /* TOP HEADER                                                */
+    /* ========================================================= */
+    #main-app {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .top-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ink-black);
+    }
+
+    .brand-left-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .brand-icon-box {
+      width: 38px;
+      height: 38px;
+      background: var(--bg-yellow);
+      border: 2.5px solid var(--ink-black);
+      border-radius: 10px;
+      box-shadow: 2px 2px 0px var(--ink-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 16px;
+    }
+
+    .brand-title-stack {
+      line-height: 1.05;
+    }
+
+    .brand-title-stack strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+
+    .brand-title-stack small {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #1f2937;
+    }
+
+    .top-dynamic-pill {
+      background: #0d0d0d;
+      color: #ffffff;
+      border: 2px solid var(--ink-black);
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .green-live-dot {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    .online-tag-btn {
+      background: #ffffff;
+      color: var(--success);
+      border: 2px solid var(--ink-black);
+      border-radius: 8px;
+      padding: 5px 9px;
+      font-size: 10.5px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 2px 2px 0px var(--ink-black);
+      white-space: nowrap;
+    }
+
+    .online-tag-btn.closed {
+      color: var(--danger);
+    }
+
+    /* BARIS AKSI CEPAT (BANTUAN WA + KOTAK 4 INFORMASI & KONTAK) */
+    .quick-action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 10px;
+    }
+
+    .wa-help-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 2px solid var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      color: var(--ink-black);
+      text-decoration: none;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .wa-help-chip span.cta {
+      color: var(--success);
+      font-weight: 900;
+    }
+
+    .qr-shortcut-btn {
+      width: 42px;
+      height: 42px;
+      background: #ffffff;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink-black);
+      flex-shrink: 0;
+      transition: transform 0.12s;
+    }
+
+    .qr-shortcut-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    .closed-banner {
+      display: none;
+      background: #fee2e2;
+      border: 2px solid var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      color: #991b1b;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* ========================================================= */
+    /* DASHBOARD HEADING + JAM REALTIME + TERMINAL CARD          */
+    /* ========================================================= */
+    .dashboard-heading {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--ink-black);
+      margin-bottom: 14px;
+      letter-spacing: -0.3px;
+    }
+
+    .dashboard-heading span {
+      color: var(--accent-blue);
+    }
+
+    .clock-card {
+      background: #ffffff;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+    }
+
+    .clock-zone {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #4b5563;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .clock-time {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--ink-black);
+      letter-spacing: 1px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .clock-date {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .terminal-product-card {
+      background: linear-gradient(145deg, #08291e 0%, #041711 100%);
+      background-image:
+        linear-gradient(rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.08) 1px, transparent 1px),
+        linear-gradient(145deg, #08291e 0%, #041711 100%);
+      background-size: 22px 22px, 22px 22px, 100% 100%;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard);
+      border-radius: 20px;
+      padding: 20px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .terminal-product-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .terminal-kicker {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #6ee7b7;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .terminal-live-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #34d399;
+      margin-bottom: 8px;
+    }
+
+    .terminal-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .terminal-desc {
+      font-size: 13px;
+      color: #a7f3d0;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .terminal-price-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: #9ca3af;
+      text-transform: uppercase;
+    }
+
+    .terminal-price-value {
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffffff;
+      margin: 2px 0 14px;
+    }
+
+    .terminal-cta-btn {
+      width: 100%;
+      background: var(--bg-yellow);
+      color: var(--ink-black);
+      border: 2px solid var(--ink-black);
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #000000;
+    }
+
+    /* ========================================================= */
+    /* KARTU PANEL KONTEN                                        */
+    /* ========================================================= */
+    .card-panel {
+      display: none;
+      background: var(--card-white);
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .summary-box {
+      background: #fefce8;
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid var(--ink-black);
+      font-size: 13.5px;
+      margin-bottom: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
+
+    .summary-row:last-child {
+      margin-bottom: 0;
+      padding-top: 8px;
+      border-top: 1.5px dashed var(--ink-black);
+      font-weight: 800;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-black);
+      margin-bottom: 6px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 2px solid var(--ink-black);
+      background: #ffffff;
+      color: var(--ink-black);
+      font-size: 14px;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      background: #fefce8;
+    }
+
+    .input-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .qris-box {
+      background: #f9fafb;
+      border: 2px solid var(--ink-black);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .qris-badge {
+      display: inline-block;
+      background: var(--bg-yellow);
+      color: var(--ink-black);
+      border: 1.5px solid var(--ink-black);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .qris-box img {
+      width: 185px;
+      height: 185px;
+      border-radius: 10px;
+      border: 2px solid var(--ink-black);
+      margin: 10px 0;
+      background: white;
+      padding: 6px;
+      object-fit: contain;
+    }
+
+    .btn {
+      background: var(--ink-black);
+      color: #ffffff;
+      border: 2px solid var(--ink-black);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: var(--shadow-hard-sm);
+    }
+
+    .btn:disabled {
+      background: #6b7280;
+      cursor: not-allowed;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      border: 2px solid var(--ink-black);
+      color: var(--ink-black);
+    }
+
+    .btn-acc {
+      background: var(--success);
+      color: #ffffff;
+      padding: 9px 14px;
+      font-size: 13px;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      border: 2px solid var(--ink-black);
+      color: var(--danger);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1.5px solid var(--ink-black);
+      font-weight: 800;
+      font-size: 11px;
+    }
+
+    .status-PENDING {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-ACC, .status-SUKSES {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-DITOLAK {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .delivery-box {
+      display: none;
+      background: #ecfdf5;
+      border: 2px solid var(--ink-black);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .delivery-box h4 {
+      color: var(--success);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .delivery-content {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-bottom: 10px;
+      border: 1.5px solid var(--ink-black);
+    }
+
+    .order-item {
+      background: #f9fafb;
+      border: 2px solid var(--ink-black);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 6px;
+    }
+
+    .order-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .sent-data-preview {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--ink-black);
+      margin-top: 8px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      border: 1.5px solid var(--ink-black);
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 2px solid var(--ink-black);
+      background: #ffffff;
+      color: var(--ink-black);
+      font-size: 13px;
+    }
+
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--bg-yellow);
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      color: var(--ink-black);
+      font-size: 24px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .ref-box {
+      background: #ecfdf5;
+      border: 2px dashed var(--ink-black);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    /* ========================================================= */
+    /* MODAL PILIH PAKET, INFORMASI & KONTAK ADMIN               */
+    /* ========================================================= */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 200;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 18px;
+      padding: 20px;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard);
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink-black);
+    }
+
+    .close-btn {
+      background: var(--bg-yellow);
+      border: 2px solid var(--ink-black);
+      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      color: var(--ink-black);
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .role-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+      max-height: 330px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .role-item {
+      border: 2px solid var(--ink-black);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+    }
+
+    .role-item.trial-item {
+      background: #ecfdf5;
+    }
+
+    .role-item.selected {
+      background: var(--bg-yellow);
+      box-shadow: var(--shadow-hard-sm);
+    }
+
+    .role-info h4 {
+      font-size: 14.5px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .role-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .role-price {
+      font-weight: 900;
+      color: var(--success);
+      font-size: 13.5px;
+      white-space: nowrap;
+      margin-left: 10px;
+    }
+
+    /* KARTU KONTAK ADMIN DI MODAL KOTAK 4 */
+    .contact-channel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .contact-channel-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #ffffff;
+      border: 2px solid var(--ink-black);
+      box-shadow: var(--shadow-hard-sm);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-decoration: none;
+      color: var(--ink-black);
+      transition: transform 0.12s;
+    }
+
+    .contact-channel-card:hover {
+      background: #fefce8;
+      transform: translateY(-1px);
+    }
+
+    .contact-channel-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .contact-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 2px solid var(--ink-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon-badge.wa { background: #dcfce7; color: #15803d; }
+    .contact-icon-badge.saluran { background: #fef08a; color: #0a0a0a; }
+    .contact-icon-badge.tg { background: #e0f2fe; color: #0369a1; }
+
+    .contact-channel-info strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .contact-channel-info small {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .contact-arrow {
+      font-weight: 900;
+      font-size: 13px;
+      background: var(--bg-yellow);
+      border: 1.5px solid var(--ink-black);
+      padding: 4px 9px;
+      border-radius: 8px;
+    }
+
+    .legal-body {
+      overflow-y: auto;
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.65;
+      padding-right: 4px;
+    }
+
+    .legal-body h4 {
+      color: var(--ink-black);
+      font-size: 14px;
+      margin: 12px 0 4px;
+    }
+
+    .legal-body ul {
+      padding-left: 18px;
+      margin-bottom: 8px;
+    }
+
+    /* ========================================================= */
+    /* FOOTER                                                    */
+    /* ========================================================= */
+    .site-footer {
+      margin-top: 26px;
+    }
+
+    .footer-card {
+      background: #ffffff;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: var(--shadow-hard);
+      border-radius: 18px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-weight: 900;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .footer-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #ecfdf5;
+      border: 1.5px solid var(--ink-black);
+      color: var(--success);
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .footer-status-pill.closed {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .status-dot-small {
+      width: 7px;
+      height: 7px;
+      background: currentColor;
+      border-radius: 50%;
+    }
+
+    .social-grid {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .social-box {
+      width: 42px;
+      height: 42px;
+      background: var(--bg-yellow);
+      border: 2px solid var(--ink-black);
+      box-shadow: 2px 2px 0px var(--ink-black);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-black);
+      text-decoration: none;
+    }
+
+    .social-box svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 14px;
+      padding: 12px 0;
+      border-top: 1.5px solid var(--ink-black);
+      border-bottom: 1.5px solid var(--ink-black);
+      margin-bottom: 12px;
+    }
+
+    .footer-link-btn {
+      background: none;
+      border: none;
+      color: var(--ink-black);
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .footer-disclaimer {
+      font-size: 11px;
+      color: #4b5563;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .footer-copy {
+      font-size: 11.5px;
+      color: var(--ink-black);
+      font-weight: 800;
+    }
+
+    /* ========================================================= */
+    /* FLOATING BOTTOM NAVIGATION BAR (PROJECT, RIWAYAT, PROFIL) */
+    /* ========================================================= */
+    .bottom-nav-wrapper {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 28px);
+      max-width: 480px;
+      z-index: 150;
+    }
+
+    .bottom-nav-bar {
+      background: #ffffff;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), 3px 3px 0px var(--ink-black);
+      border-radius: 22px;
+      padding: 8px 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bottom-nav-item {
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 4px;
+      border-radius: 14px;
+      cursor: pointer;
+      color: #4b5563;
+      transition: all 0.15s ease;
+    }
+
+    .bottom-nav-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .bottom-nav-item span {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .bottom-nav-item.active-nav {
+      color: var(--ink-black);
+    }
+
+    .bottom-nav-item.active-nav .bottom-nav-icon {
+      background: var(--bg-yellow);
+      border-color: var(--ink-black);
+      box-shadow: 2px 2px 0px var(--ink-black);
+      color: var(--ink-black);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- ========================================================= -->
+  <!-- HALAMAN AUTENTIKASI (LOGIN & REGISTER + TURNSTILE)        -->
+  <!-- ========================================================= -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo-box">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+      <div class="auth-header">
+        <h2>XENTRIX PROJECT</h2>
+        <p id="auth-subtitle">Masuk ke akun member untuk melanjutkan</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" id="tab-login-btn" class="auth-tab-btn active" onclick="gantiTabAuth('login')">Masuk (Login)</button>
+        <button type="button" id="tab-register-btn" class="auth-tab-btn" onclick="gantiTabAuth('register')">Daftar Akun</button>
+      </div>
+
+      <!-- FORM LOGIN -->
+      <form id="form-login" onsubmit="prosesLogin(event)">
+        <div class="auth-field">
+          <label>Alamat Gmail</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </span>
+            <input type="email" id="login-email" placeholder="nama@gmail.com" required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="login-password" placeholder="Masukkan password akun..." required>
+            <button type="button" class="toggle-pw-btn" onclick="toggleLihatPassword('login-password', this)" title="Tampilkan Password">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="cf-security-box" id="cf-box-login"></div>
+
+        <button type="submit" id="btn-login" class="btn-auth-submit">
+          Masuk ke Xentrix Project →
+        </button>
+      </form>
+
+      <!-- FORM REGISTER -->
+      <form id="form-register" style="display: none;" onsubmit="prosesRegister(event)">
+        <div class="auth-field">
+          <label>Nama Lengkap / Panggilan</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input type="text" id="reg-nama" placeholder="Masukkan nama kamu..." required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Alamat Gmail</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </span>
+            <input type="email" id="reg-email" placeholder="nama@gmail.com" required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Buat Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="reg-password" placeholder="Minimal 5 karakter..." oninput="cekKekuatanPassword(this.value)" required>
+            <button type="button" class="toggle-pw-btn" onclick="toggleLihatPassword('reg-password', this)" title="Tampilkan Password">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="pw-strength-wrap">
+            <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-strength-fill"></div></div>
+            <span class="pw-strength-text" id="pw-strength-text">Kosong</span>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label>Kode Referral (Opsional)</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon-left">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            </span>
+            <input type="text" id="reg-referral" placeholder="Contoh: ANDI-4821 (kosongkan jika tidak ada)">
+          </div>
+        </div>
+
+        <div class="cf-security-box" id="cf-box-register"></div>
+
+        <button type="submit" id="btn-register" class="btn-auth-submit btn-auth-register">
+          Buat Akun & Masuk →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- HALAMAN UTAMA XENTRIX PROJECT                             -->
+  <!-- ========================================================= -->
+  <div id="main-app">
+    <!-- TOP BAR -->
+    <div class="top-header-bar">
+      <div class="brand-left-wrap">
+        <div class="brand-icon-box">XP</div>
+        <div class="brand-title-stack">
+          <strong>XENTRIX</strong>
+          <small>PROJECT</small>
+        </div>
+      </div>
+
+      <div class="top-dynamic-pill">
+        <span class="green-live-dot"></span>
+        <span>XENTRIX PROJECT • APK</span>
+      </div>
+
+      <span id="top-online-badge" class="online-tag-btn">ONLINE</span>
+    </div>
+
+    <!-- BARIS AKSI CEPAT (BANTUAN WA + KOTAK 4 INFORMASI & KONTAK ADMIN) -->
+    <div class="quick-action-row">
+      <a id="wa-help-bubble" href="#" target="_blank" rel="noopener" class="wa-help-chip">
+        <span>Halo, <strong id="greet-user-name">Member</strong> • <span class="cta">Chat CS WA →</span></span>
+      </a>
+
+      <button type="button" class="qr-shortcut-btn" onclick="bukaModalInfoKontak()" title="Informasi & Kontak Resmi">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </button>
+    </div>
+
+    <div id="closed-banner" class="closed-banner">
+      ⚠️ Layanan sedang tutup sementara. Silakan kembali pada jam operasional atau hubungi CS WA.
+    </div>
+
+    <!-- 1. HALAMAN DASHBOARD / PROJECT -->
+    <div id="catalog-page">
+      <h1 class="dashboard-heading">Dashboard <span>XENTRIX PROJECT</span></h1>
+
+      <!-- KARTU JAM REAL-TIME ASIA/JAKARTA -->
+      <div class="clock-card">
+        <div class="clock-zone">WAKTU ASIA/JAKARTA</div>
+        <div class="clock-time" id="live-clock-time">00.00.00</div>
+        <div class="clock-date" id="live-clock-date">Memuat tanggal...</div>
+      </div>
+
+      <!-- KARTU TERMINAL PAKET ROLE APK XENTRIX -->
+      <div class="terminal-product-card" onclick="bukaModalHarga()">
+        <div class="terminal-kicker">XENTRIX PROJECT / ACCESS TERMINAL</div>
+        <div class="terminal-live-row">
+          <span class="green-live-dot"></span>
+          <span id="catalog-badge">APK ACCESS + FREE TRIAL</span>
+        </div>
+        <h2 class="terminal-title">Harga Role Apk Xentrix</h2>
+        <p class="terminal-desc">Pilih paket role sesuai kebutuhanmu. Data akun/key dikirim otomatis setelah konfirmasi pembayaran selesai.</p>
+
+        <div class="terminal-price-label">MULAI DARI</div>
+        <div class="terminal-price-value" id="harga-mulai">Memuat...</div>
+
+        <button class="terminal-cta-btn" type="button">Pilih Paket Role Sekarang →</button>
+      </div>
+    </div>
+
+    <!-- 2A. HALAMAN CHECKOUT KHUSUS FREE TRIAL -->
+    <div id="trial-checkout-page" class="card-panel">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+        <button class="btn btn-outline" style="padding: 6px 12px;" onclick="tampilkanHalaman('catalog-page')">← Batal</button>
+        <h3 style="font-size: 17px; font-weight: 900;">Checkout Free Trial</h3>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row"><span>Paket</span><strong style="color: var(--success);">🎁 FREE TRIAL APK XENTRIX</strong></div>
+        <div class="summary-row"><span>Keterangan</span><span id="trial-info-desc">Akses uji coba gratis 1 akun</span></div>
+        <div class="summary-row"><span>Ketentuan</span><span>1 Akun / IP hanya 1x klaim</span></div>
+        <div class="summary-row"><span>Total Biaya</span><span style="color: var(--success);">Rp 0 (GRATIS)</span></div>
+      </div>
+
+      <div class="input-group">
+        <label>Nama Username untuk Login Aplikasi</label>
+        <input type="text" id="trial-username" placeholder="Masukkan username yang diinginkan...">
+        <div class="input-hint">*Setelah klik konfirmasi, permintaan akan segera diproses oleh sistem.</div>
+      </div>
+
+      <button class="btn btn-acc" style="width: 100%; padding: 13px; font-size: 15px;" id="btn-submit-trial" onclick="kirimRequestTrial()">
+        Konfirmasi Free Trial
+      </button>
+    </div>
+
+    <!-- 2B. HALAMAN CHECKOUT PAKET BERBAYAR (QRIS) -->
+    <div id="paid-checkout-page" class="card-panel">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+        <button class="btn btn-outline" style="padding: 6px 12px;" onclick="tampilkanHalaman('catalog-page')">← Batal</button>
+        <h3 style="font-size: 17px; font-weight: 900;">Checkout Paket Role</h3>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row"><span>Produk</span><span>Role Apk Xentrix</span></div>
+        <div class="summary-row"><span>Paket</span><span id="checkout-role-name">-</span></div>
+        <div class="summary-row"><span>Metode</span><span>QRIS (All Payment)</span></div>
+        <div class="summary-row"><span>Total Bayar</span><span id="checkout-total" style="color: var(--success);">Rp 0</span></div>
+      </div>
+
+      <div class="input-group">
+        <label>Username untuk Login ke Aplikasi</label>
+        <input type="text" id="paid-username" placeholder="Contoh: andixentrix (tanpa spasi)">
+      </div>
+
+      <div class="input-group">
+        <label>Nomor WhatsApp / Kontak Aktif</label>
+        <input type="text" id="paid-contact" placeholder="Contoh: 0858xxxx">
+      </div>
+
+      <div class="qris-box">
+        <span class="qris-badge">PEMBAYARAN QRIS</span>
+        <p style="font-size: 12px; color: var(--text-muted);">Scan QRIS di bawah menggunakan DANA, GoPay, OVO, ShopeePay, atau M-Banking:</p>
+        <img id="qris-image" src="" alt="QRIS">
+        <p style="font-size: 12px; color: #b45309; font-weight: 700;">Setelah transfer berhasil, klik tombol konfirmasi di bawah.</p>
+      </div>
+
+      <button class="btn" style="width: 100%; padding: 13px;" id="btn-submit-paid" onclick="kirimRequestPaid()">
+        Konfirmasi Pembayaran
+      </button>
+    </div>
+
+    <!-- 3. HALAMAN STATUS PESANAN / TRIAL REALTIME -->
+    <div id="status-page" class="card-panel" style="text-align: center;">
+      <h3 style="margin-bottom: 6px; font-weight: 900;">Status Permintaan Kamu</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Permintaan sudah masuk ke sistem. Data akun otomatis muncul di bawah setelah status SUKSES.</p>
+      
+      <div class="summary-box" style="text-align: left;">
+        <div class="summary-row"><span>ID Request</span><strong id="track-id">-</strong></div>
+        <div class="summary-row"><span>Paket</span><span id="track-role">-</span></div>
+        <div class="summary-row"><span>Username APK</span><strong id="track-username" style="color: var(--accent-blue);">-</strong></div>
+        <div class="summary-row"><span>Biaya</span><span id="track-harga">-</span></div>
+        <div class="summary-row" style="align-items: center;">
+          <span>Status</span>
+          <span id="track-status" class="status-badge status-PENDING">Sedang Konfirmasi pembayaran</span>
+        </div>
+      </div>
+
+      <div id="buyer-delivery-box" class="delivery-box">
+        <h4>✓ SUKSES! Ini Data Akun Kamu:</h4>
+        <div class="delivery-content" id="buyer-delivery-text"></div>
+        <button class="btn btn-acc" style="width: 100%;" onclick="salinTeksLangsung(document.getElementById('buyer-delivery-text').innerText)">Salin Data</button>
+      </div>
+
+      <div id="buyer-rejected-box" style="display:none; background: #fee2e2; border: 2px solid var(--ink-black); border-radius: 10px; padding: 12px; margin-bottom: 16px; font-size: 13px; color: #991b1b;">
+        Permintaan ditolak. Alasan: <strong id="buyer-rejected-reason">-</strong>
+      </div>
+
+      <button class="btn btn-outline" style="width: 100%;" onclick="bukaHalamanRiwayat()">Lihat Semua Riwayat</button>
+    </div>
+
+    <!-- 4. HALAMAN RIWAYAT -->
+    <div id="history-page" class="card-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-weight: 900;">Riwayat Akun Kamu</h3>
+        <button class="btn btn-outline" style="padding: 6px 11px; font-size: 12px;" onclick="muatRiwayatPelanggan()">Refresh</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        Seluruh riwayat akunmu tampil otomatis, atau cari pakai ID Request:
+      </p>
+      <div class="search-bar">
+        <input type="text" id="history-search-input" placeholder="Masukkan ID (TRIAL-xxxx / XTX-xxxx)...">
+        <button class="btn" style="padding: 8px 14px; font-size: 13px;" onclick="cariRiwayatManual()">Cari</button>
+      </div>
+      <div id="history-list">
+        <p style="color: var(--text-muted); font-size: 13px;">Memuat riwayat...</p>
+      </div>
+    </div>
+
+    <!-- 5. HALAMAN PROFIL AKUN PELANGGAN -->
+    <div id="profile-page" class="card-panel">
+      <div style="text-align: center; margin-bottom: 18px;">
+        <div class="profile-avatar" id="prof-avatar">U</div>
+        <h3 id="prof-nama" style="font-size: 18px; font-weight: 900; margin-bottom: 2px;">-</h3>
+        <p id="prof-email" style="font-size: 13px; color: var(--text-muted);">-</p>
+      </div>
+
+      <div class="ref-box">
+        <div>
+          <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600;">Kode Referral Kamu:</div>
+          <strong id="prof-ref-code" style="font-size: 16px; color: var(--success); letter-spacing: 0.5px;">-</strong>
+        </div>
+        <button type="button" class="btn btn-acc" onclick="salinTeksLangsung(document.getElementById('prof-ref-code').innerText)">Salin Kode</button>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row"><span>ID Member</span><strong id="prof-id">-</strong></div>
+        <div class="summary-row"><span>Nama Akun</span><span id="prof-nama-detail">-</span></div>
+        <div class="summary-row"><span>Gmail Terdaftar</span><span id="prof-email-detail">-</span></div>
+        <div class="summary-row"><span>Referral Dipakai Saat Daftar</span><span id="prof-ref-by">-</span></div>
+        <div class="summary-row"><span>Teman Diundang</span><strong id="prof-total-undang" style="color: var(--accent-blue);">0 Orang</strong></div>
+        <div class="summary-row"><span>Terdaftar Sejak</span><span id="prof-created">-</span></div>
+      </div>
+
+      <button type="button" class="btn btn-danger" style="width: 100%; padding: 12px;" onclick="logoutAkun()">
+        Keluar dari Akun (Logout)
+      </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-card">
+        <div class="footer-brand">XENTRIX PROJECT</div>
+        <p class="footer-tagline">Layanan resmi aktivasi Role & Akses APK Xentrix. Verifikasi cepat, aman, dan transparan.</p>
+
+        <div id="footer-status-pill" class="footer-status-pill">
+          <span class="status-dot-small"></span>
+          <span id="footer-status-text">Memuat status layanan...</span>
+        </div>
+
+        <div class="social-grid">
+          <a id="sosmed-tiktok" href="#" target="_blank" rel="noopener" class="social-box" title="TikTok Resmi">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+          </a>
+
+          <a id="sosmed-instagram" href="#" target="_blank" rel="noopener" class="social-box" title="Instagram Resmi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+
+          <a id="sosmed-whatsapp" href="#" target="_blank" rel="noopener" class="social-box" title="WhatsApp Resmi">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.459 3.475 1.331 4.988L2 22l5.184-1.359a9.927 9.927 0 0 0 4.847 1.258h.004c5.515 0 9.969-4.454 9.969-9.969A9.936 9.936 0 0 0 19.08 4.92 9.903 9.903 0 0 0 12.031 2zm5.805 14.23c-.244.688-1.418 1.316-1.965 1.398-.503.076-1.141.108-1.842-.115-.426-.135-.973-.316-1.674-.619-2.946-1.272-4.87-4.238-5.017-4.434-.147-.196-1.198-1.593-1.198-3.039 0-1.446.758-2.157 1.027-2.451.269-.294.587-.368.783-.368.196 0 .391.002.562.01.18.009.422-.068.66.504.244.588.831 2.034.904 2.181.073.147.122.318.024.514-.098.196-.147.318-.294.49-.147.171-.309.382-.441.514-.147.147-.3.306-.129.6.171.294.761 1.255 1.634 2.033 1.123 1.001 2.069 1.312 2.363 1.459.294.147.465.122.636-.073.171-.196.734-.857.93-1.151.196-.294.391-.245.66-.147.269.098 1.713.808 2.006.955.294.147.49.22.563.343.073.122.073.71-.171 1.398z"/></svg>
+          </a>
+
+          <a id="sosmed-telegram" href="#" target="_blank" rel="noopener" class="social-box" title="Telegram Resmi">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+        </div>
+
+        <nav class="footer-links">
+          <button type="button" class="footer-link-btn" onclick="bukaModalLegal('privasi')">Kebijakan Privasi</button>
+          <button type="button" class="footer-link-btn" onclick="bukaModalLegal('legal')">Syarat & Legal</button>
+          <button type="button" class="footer-link-btn" onclick="bukaModalInfoKontak()">Kontak Resmi</button>
+          <button type="button" class="footer-link-btn" onclick="bukaModalLegal('faq')">Panduan & FAQ</button>
+        </nav>
+
+        <p class="footer-disclaimer">
+          Pastikan hanya bertransaksi melalui nomor & akun resmi yang tercantum di halaman ini. Kami tidak bertanggung jawab atas transaksi di luar kontak resmi Xentrix Project.
+        </p>
+        <p class="footer-copy">© 2026 Xentrix Project • All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- NAVIGASI BAWAH MELAYANG (PROJECT, RIWAYAT, PROFIL) -->
+    <div class="bottom-nav-wrapper">
+      <nav class="bottom-nav-bar">
+        <button type="button" class="bottom-nav-item active-nav" id="nav-store" onclick="tampilkanHalaman('catalog-page')">
+          <div class="bottom-nav-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <span>Project</span>
+        </button>
+
+        <button type="button" class="bottom-nav-item" id="nav-history" onclick="bukaHalamanRiwayat()">
+          <div class="bottom-nav-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <span>Riwayat</span>
+        </button>
+
+        <button type="button" class="bottom-nav-item" id="nav-profile" onclick="bukaHalamanProfil()">
+          <div class="bottom-nav-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <span>Profil</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PILIH PAKET HARGA -->
+<div class="modal-overlay" id="modal-harga">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 style="font-size: 16.5px; font-weight: 900;">Pilih Paket Role Apk Xentrix</h3>
+      <button class="close-btn" onclick="tutupModalHarga()">&times;</button>
+    </div>
+    <div class="role-list" id="role-list-container"></div>
+    <button class="btn" id="btn-lanjut-checkout" style="width: 100%; padding: 12px;" disabled onclick="keHalamanCheckout()">
+      Lanjutkan
+    </button>
+  </div>
+</div>
+
+<!-- MODAL INFORMASI & KONTAK RESMI (DARI TOMBOL KOTAK 4) -->
+<div class="modal-overlay" id="modal-info-kontak">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 style="font-size: 16.5px; font-weight: 900;">Informasi & Kontak Resmi</h3>
+      <button class="close-btn" onclick="tutupModalInfoKontak()">&times;</button>
+    </div>
+    <div class="legal-body">
+      <div class="summary-box" style="margin-bottom: 12px;">
+        <div class="summary-row"><span>Platform</span><strong>Xentrix Project</strong></div>
+        <div class="summary-row"><span>Jam Operasional</span><strong id="info-modal-jam">24 Jam / 09.00 – 02.00 WIB Dini hari</strong></div>
+        <div class="summary-row"><span>Status Layanan</span><strong id="info-modal-status" style="color: var(--success);">ONLINE</strong></div>
+      </div>
+
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 8px;">
+        Hubungi atau ikuti saluran informasi resmi Xentrix Project di bawah ini untuk bantuan & pembaruan:
+      </p>
+
+      <div class="contact-channel-list">
+        <!-- WhatsApp -->
+        <a id="info-link-wa" href="#" target="_blank" rel="noopener" class="contact-channel-card">
+          <div class="contact-channel-left">
+            <div class="contact-icon-badge wa">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.758.459 3.475 1.331 4.988L2 22l5.184-1.359a9.927 9.927 0 0 0 4.847 1.258h.004c5.515 0 9.969-4.454 9.969-9.969A9.936 9.936 0 0 0 19.08 4.92 9.903 9.903 0 0 0 12.031 2zm5.805 14.23c-.244.688-1.418 1.316-1.965 1.398-.503.076-1.141.108-1.842-.115-.426-.135-.973-.316-1.674-.619-2.946-1.272-4.87-4.238-5.017-4.434-.147-.196-1.198-1.593-1.198-3.039 0-1.446.758-2.157 1.027-2.451.269-.294.587-.368.783-.368.196 0 .391.002.562.01.18.009.422-.068.66.504.244.588.831 2.034.904 2.181.073.147.122.318.024.514-.098.196-.147.318-.294.49-.147.171-.309.382-.441.514-.147.147-.3.306-.129.6.171.294.761 1.255 1.634 2.033 1.123 1.001 2.069 1.312 2.363 1.459.294.147.465.122.636-.073.171-.196.734-.857.93-1.151.196-.294.391-.245.66-.147.269.098 1.713.808 2.006.955.294.147.49.22.563.343.073.122.073.71-.171 1.398z"/></svg>
+            </div>
+            <div class="contact-channel-info">
+              <strong>WhatsApp Resmi</strong>
+              <small id="info-text-wa">+6285812345390</small>
+            </div>
+          </div>
+          <span class="contact-arrow">Chat →</span>
+        </a>
+
+        <!-- Saluran WhatsApp -->
+        <a id="info-link-saluran-wa" href="#" target="_blank" rel="noopener" class="contact-channel-card">
+          <div class="contact-channel-left">
+            <div class="contact-icon-badge saluran">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            </div>
+            <div class="contact-channel-info">
+              <strong>Saluran WhatsApp</strong>
+              <small>Info update & pengumuman resmi</small>
+            </div>
+          </div>
+          <span class="contact-arrow">Buka →</span>
+        </a>
+
+        <!-- Telegram -->
+        <a id="info-link-tg" href="#" target="_blank" rel="noopener" class="contact-channel-card">
+          <div class="contact-channel-left">
+            <div class="contact-icon-badge tg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            </div>
+            <div class="contact-channel-info">
+              <strong>Telegram Resmi</strong>
+              <small>Kontak & channel Telegram</small>
+            </div>
+          </div>
+          <span class="contact-arrow">Buka →</span>
+        </a>
+      </div>
+    </div>
+    <button class="btn btn-outline" style="width: 100%; margin-top: 16px;" onclick="tutupModalInfoKontak()">Tutup</button>
+  </div>
+</div>
+
+<!-- MODAL INFORMASI PRIVASI, LEGAL & FAQ -->
+<div class="modal-overlay" id="modal-legal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-legal-title" style="font-size: 16px; font-weight: 900;">Informasi</h3>
+      <button class="close-btn" onclick="tutupModalLegal()">&times;</button>
+    </div>
+    <div id="modal-legal-content" class="legal-body"></div>
+    <button class="btn btn-outline" style="width: 100%; margin-top: 16px;" onclick="tutupModalLegal()">Tutup</button>
+  </div>
+</div>
+
+<script>
+  // =========================================================
+  // KONFIGURASI URL BACKEND API TERPISAH (WAJIB HTTPS)
+  // Ganti URL di bawah sesuai domain/subdomain server API VPS kamu
+  // =========================================================
+  const API_BASE_URL = "http://nayyaprivatpanell.ryuuuprv.my.id:2132";
+
+  let appConfig = null;
+  let currentUser = null;
+  let paketTerpilih = null;
+  let intervalCekStatus = null;
+
+  // Token Turnstile untuk Login & Register
+  let captchaTokenLogin = "";
+  let captchaTokenRegister = "";
+  let cfWidgetLoginId = null;
+  let cfWidgetRegisterId = null;
+
+  // =========================================================
+  // JAM REAL-TIME ASIA/JAKARTA
+  // =========================================================
+  function updateJamJakarta() {
+    const now = new Date();
+    const waktuStr = new Intl.DateTimeFormat("id-ID", {
+      timeZone: "Asia/Jakarta",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(now).replace(/:/g, ".");
+
+    const tanggalStr = new Intl.DateTimeFormat("id-ID", {
+      timeZone: "Asia/Jakarta",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }).format(now);
+
+    const elTime = document.getElementById("live-clock-time");
+    const elDate = document.getElementById("live-clock-date");
+    if (elTime) elTime.innerText = waktuStr;
+    if (elDate) elDate.innerText = tanggalStr;
+  }
+  updateJamJakarta();
+  setInterval(updateJamJakarta, 1000);
+
+  function formatRupiah(angka) {
+    if (angka === 0) return "GRATIS";
+    return "Rp " + Number(angka).toLocaleString("id-ID");
+  }
+
+  function getAuthToken() {
+    return localStorage.getItem("xentrix_auth_token") || "";
+  }
+
+  async function apiRequest(endpoint, options = {}) {
+    const baseUrl = API_BASE_URL.replace(/\/+$/, "");
+    const url = `${baseUrl}${endpoint}`;
+    const headers = {
+      ...(options.headers || {})
+    };
+
+    const token = getAuthToken();
+    if (token && !headers["Authorization"]) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const res = await fetch(url, {
+      ...options,
+      headers
+    });
+
+    return res.json();
+  }
+
+  // =========================================================
+  // RENDER WIDGET CLOUDFLARE TURNSTILE / INTERNAL VERIFICATION
+  // =========================================================
+  function renderSecurityWidgets() {
+    const siteKey = appConfig && appConfig.turnstileSiteKey ? appConfig.turnstileSiteKey : "";
+    captchaTokenLogin = "";
+    captchaTokenRegister = "";
+
+    if (siteKey && window.turnstile) {
+      const boxLogin = document.getElementById("cf-box-login");
+      const boxReg = document.getElementById("cf-box-register");
+      boxLogin.innerHTML = "";
+      boxReg.innerHTML = "";
+
+      cfWidgetLoginId = turnstile.render("#cf-box-login", {
+        sitekey: siteKey,
+        theme: "light",
+        callback: (token) => { captchaTokenLogin = token; },
+        "expired-callback": () => { captchaTokenLogin = ""; }
+      });
+
+      cfWidgetRegisterId = turnstile.render("#cf-box-register", {
+        sitekey: siteKey,
+        theme: "light",
+        callback: (token) => { captchaTokenRegister = token; },
+        "expired-callback": () => { captchaTokenRegister = ""; }
+      });
+    } else {
+      pasangWidgetFallback("cf-box-login", "login");
+      pasangWidgetFallback("cf-box-register", "register");
+    }
+  }
+
+  function pasangWidgetFallback(containerId, tipe) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = `
+      <div class="cf-fallback-widget" onclick="verifikasiFallback('${containerId}', '${tipe}')">
+        <div class="cf-check-left">
+          <div class="cf-checkbox" id="chk-${tipe}"></div>
+          <span style="font-size: 13px; font-weight: 700; color: #0a0a0a;" id="txt-${tipe}">Verifikasi bahwa Anda manusia</span>
+        </div>
+        <div class="cf-brand-right">
+          <span>CLOUDFLARE</span>
+          <small>Security Check</small>
+        </div>
+      </div>
+    `;
+  }
+
+  function verifikasiFallback(containerId, tipe) {
+    const chk = document.getElementById(`chk-${tipe}`);
+    const txt = document.getElementById(`txt-${tipe}`);
+    if (chk.classList.contains("verified")) return;
+
+    chk.innerHTML = `<div class="cf-spinner"></div>`;
+    txt.innerText = "Memverifikasi...";
+
+    setTimeout(() => {
+      chk.classList.add("verified");
+      chk.innerHTML = "✓";
+      txt.innerText = "Berhasil diverifikasi";
+      if (tipe === "login") captchaTokenLogin = "INTERNAL_VERIFIED";
+      else captchaTokenRegister = "INTERNAL_VERIFIED";
+    }, 550);
+  }
+
+  function resetSecurityWidget(tipe) {
+    const siteKey = appConfig && appConfig.turnstileSiteKey ? appConfig.turnstileSiteKey : "";
+    if (siteKey && window.turnstile) {
+      if (tipe === "login" && cfWidgetLoginId !== null) {
+        captchaTokenLogin = "";
+        turnstile.reset(cfWidgetLoginId);
+      } else if (tipe === "register" && cfWidgetRegisterId !== null) {
+        captchaTokenRegister = "";
+        turnstile.reset(cfWidgetRegisterId);
+      }
+    } else {
+      if (tipe === "login") {
+        captchaTokenLogin = "";
+        pasangWidgetFallback("cf-box-login", "login");
+      } else {
+        captchaTokenRegister = "";
+        pasangWidgetFallback("cf-box-register", "register");
+      }
+    }
+  }
+
+  // =========================================================
+  // FITUR UI FORM LOGIN & REGISTER
+  // =========================================================
+  function toggleLihatPassword(inputId, btn) {
+    const inp = document.getElementById(inputId);
+    if (inp.type === "password") {
+      inp.type = "text";
+      btn.style.color = "#2563eb";
+    } else {
+      inp.type = "password";
+      btn.style.color = "#4b5563";
+    }
+  }
+
+  function cekKekuatanPassword(pw) {
+    const fill = document.getElementById("pw-strength-fill");
+    const txt = document.getElementById("pw-strength-text");
+    if (!pw) {
+      fill.style.width = "0%";
+      txt.innerText = "Kosong";
+      txt.style.color = "#4b5563";
+      return;
+    }
+    if (pw.length < 5) {
+      fill.style.width = "30%";
+      fill.style.background = "#dc2626";
+      txt.innerText = "Lemah";
+      txt.style.color = "#dc2626";
+    } else if (pw.length < 8) {
+      fill.style.width = "65%";
+      fill.style.background = "#d97706";
+      txt.innerText = "Sedang";
+      txt.style.color = "#d97706";
+    } else {
+      fill.style.width = "100%";
+      fill.style.background = "#059669";
+      txt.innerText = "Kuat";
+      txt.style.color = "#059669";
+    }
+  }
+
+  function gantiTabAuth(tab) {
+    const isLogin = tab === "login";
+    document.getElementById("tab-login-btn").classList.toggle("active", isLogin);
+    document.getElementById("tab-register-btn").classList.toggle("active", !isLogin);
+    document.getElementById("form-login").style.display = isLogin ? "block" : "none";
+    document.getElementById("form-register").style.display = isLogin ? "none" : "block";
+    document.getElementById("auth-subtitle").innerText = isLogin
+      ? "Masuk ke akun member untuk melanjutkan"
+      : "Buat akun baru dalam hitungan detik";
+  }
+
+  async function cekSesiAwal() {
+    await muatKonfigurasiWeb();
+    const token = getAuthToken();
+    if (!token) {
+      tampilkanAuthScreen();
+      return;
+    }
+
+    try {
+      const data = await apiRequest("/api/auth/me");
+      if (data.success && data.user) {
+        masukKeStore(data.user);
+      } else {
+        localStorage.removeItem("xentrix_auth_token");
+        tampilkanAuthScreen();
+      }
+    } catch (e) {
+      tampilkanAuthScreen();
+    }
+  }
+
+  function tampilkanAuthScreen() {
+    document.getElementById("auth-screen").style.display = "block";
+    document.getElementById("main-app").style.display = "none";
+    renderSecurityWidgets();
+  }
+
+  function masukKeStore(user) {
+    currentUser = user;
+    document.getElementById("greet-user-name").innerText = user.nama;
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("main-app").style.display = "flex";
+    tampilkanHalaman("catalog-page");
+  }
+
+  async function prosesLogin(e) {
+    e.preventDefault();
+    if (!captchaTokenLogin) {
+      return alert("Harap selesaikan verifikasi keamanan terlebih dahulu!");
+    }
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const btn = document.getElementById("btn-login");
+
+    btn.disabled = true;
+    btn.innerText = "Memeriksa akun...";
+
+    try {
+      const data = await apiRequest("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, captchaToken: captchaTokenLogin })
+      });
+
+      if (data.success) {
+        localStorage.setItem("xentrix_auth_token", data.token);
+        masukKeStore(data.user);
+      } else {
+        resetSecurityWidget("login");
+        alert(data.message || "Gagal login.");
+      }
+    } catch (err) {
+      resetSecurityWidget("login");
+      alert("Gagal terhubung ke server API!");
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Masuk ke Xentrix Project →";
+    }
+  }
+
+  async function prosesRegister(e) {
+    e.preventDefault();
+    if (!captchaTokenRegister) {
+      return alert("Harap selesaikan verifikasi keamanan terlebih dahulu!");
+    }
+
+    const nama = document.getElementById("reg-nama").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
+    const password = document.getElementById("reg-password").value;
+    const referralInput = document.getElementById("reg-referral").value.trim();
+    const btn = document.getElementById("btn-register");
+
+    btn.disabled = true;
+    btn.innerText = "Mendaftarkan akun...";
+
+    try {
+      const data = await apiRequest("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nama, email, password, referralInput, captchaToken: captchaTokenRegister })
+      });
+
+      if (data.success) {
+        localStorage.setItem("xentrix_auth_token", data.token);
+        masukKeStore(data.user);
+      } else {
+        resetSecurityWidget("register");
+        alert(data.message || "Gagal mendaftar.");
+      }
+    } catch (err) {
+      resetSecurityWidget("register");
+      alert("Gagal terhubung ke server API!");
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Buat Akun & Masuk →";
+    }
+  }
+
+  function logoutAkun() {
+    if (!confirm("Yakin ingin keluar dari akun ini?")) return;
+    localStorage.removeItem("xentrix_auth_token");
+    currentUser = null;
+    tampilkanAuthScreen();
+  }
+
+  async function bukaHalamanProfil() {
+    tampilkanHalaman("profile-page");
+    try {
+      const data = await apiRequest("/api/auth/me");
+      if (data.success && data.user) {
+        currentUser = data.user;
+      }
+    } catch (e) {}
+
+    if (!currentUser) return;
+    document.getElementById("prof-avatar").innerText = (currentUser.nama || "U").charAt(0).toUpperCase();
+    document.getElementById("prof-nama").innerText = currentUser.nama;
+    document.getElementById("prof-email").innerText = currentUser.email;
+    document.getElementById("prof-ref-code").innerText = currentUser.kodeReferral;
+    document.getElementById("prof-id").innerText = currentUser.id;
+    document.getElementById("prof-nama-detail").innerText = currentUser.nama;
+    document.getElementById("prof-email-detail").innerText = currentUser.email;
+    document.getElementById("prof-ref-by").innerText = currentUser.referredBy || "-";
+    document.getElementById("prof-total-undang").innerText = `${currentUser.totalUndang || 0} Orang`;
+    document.getElementById("prof-created").innerText = currentUser.dibuatPada || "-";
+  }
+
+  // =========================================================
+  // KONFIGURASI WEB & PROJECT
+  // =========================================================
+  async function muatKonfigurasiWeb() {
+    try {
+      appConfig = await apiRequest("/api/config");
+
+      const pill = document.getElementById("footer-status-pill");
+      const statusText = document.getElementById("footer-status-text");
+      const topOnline = document.getElementById("top-online-badge");
+
+      if (appConfig.tokoBuka) {
+        pill.classList.remove("closed");
+        statusText.innerText = `Sistem Aktif • Operasional ${appConfig.jamOperasional}`;
+        document.getElementById("closed-banner").style.display = "none";
+        topOnline.innerText = "ONLINE";
+        topOnline.classList.remove("closed");
+      } else {
+        pill.classList.add("closed");
+        statusText.innerText = `Layanan Tutup Sementara • ${appConfig.jamOperasional}`;
+        document.getElementById("closed-banner").style.display = "block";
+        topOnline.innerText = "OFFLINE";
+        topOnline.classList.add("closed");
+      }
+
+      document.getElementById("qris-image").src = appConfig.qrisUrl;
+      const pesanWa = "Halo CS Xentrix Project, saya mengalami kendala di website.";
+      const linkWa = `https://wa.me/${appConfig.waAdmin}?text=${encodeURIComponent(pesanWa)}`;
+      document.getElementById("wa-help-bubble").href = linkWa;
+      document.getElementById("sosmed-whatsapp").href = linkWa;
+      document.getElementById("sosmed-tiktok").href = appConfig.tiktokUrl;
+      document.getElementById("sosmed-instagram").href = appConfig.instagramUrl;
+      document.getElementById("sosmed-telegram").href = appConfig.telegramUrl;
+
+      // Isi data modal Kotak 4 (Informasi & Kontak Resmi)
+      document.getElementById("info-modal-jam").innerText = appConfig.jamOperasional || "24 Jam / 09.00 – 02.00 Dini hari WIB";
+      const elStatusModal = document.getElementById("info-modal-status");
+      elStatusModal.innerText = appConfig.tokoBuka ? "ONLINE" : "TUTUP SEMENTARA";
+      elStatusModal.style.color = appConfig.tokoBuka ? "var(--success)" : "var(--danger)";
+
+      document.getElementById("info-link-wa").href = linkWa;
+      document.getElementById("info-text-wa").innerText = `+${appConfig.waAdmin}`;
+      document.getElementById("info-link-saluran-wa").href = appConfig.saluranWaUrl || linkWa;
+      document.getElementById("info-link-tg").href = appConfig.telegramUrl || "#";
+
+      const container = document.getElementById("role-list-container");
+      container.innerHTML = "";
+
+      const daftarGabungan = [];
+      if (appConfig.trialAktif) {
+        daftarGabungan.push({
+          isTrial: true,
+          nama: "🎁 FREE TRIAL",
+          deskripsi: appConfig.trialDeskripsi,
+          harga: 0
+        });
+        document.getElementById("catalog-badge").innerText = "APK ACCESS + FREE TRIAL";
+        document.getElementById("harga-mulai").innerText = "GRATIS (Trial)";
+      } else {
+        document.getElementById("catalog-badge").innerText = "APK ACCESS";
+        const minHarga = Math.min(...appConfig.paketList.map(p => p.harga));
+        document.getElementById("harga-mulai").innerText = formatRupiah(minHarga);
+      }
+
+      appConfig.paketList.forEach(p => {
+        daftarGabungan.push({ isTrial: false, nama: p.nama, deskripsi: p.deskripsi, harga: p.harga });
+      });
+
+      daftarGabungan.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "role-item" + (item.isTrial ? " trial-item" : "");
+        div.onclick = () => {
+          paketTerpilih = item;
+          document.querySelectorAll(".role-item").forEach(el => el.classList.remove("selected"));
+          div.classList.add("selected");
+          const btn = document.getElementById("btn-lanjut-checkout");
+          btn.disabled = false;
+          btn.innerText = item.isTrial ? "Lanjut ke Checkout Trial" : "Beli Sekarang";
+        };
+        div.innerHTML = `
+          <div class="role-info"><h4>${item.nama}</h4><p>${item.deskripsi}</p></div>
+          <div class="role-price">${formatRupiah(item.harga)}</div>
+        `;
+        container.appendChild(div);
+      });
+    } catch (err) {
+      document.getElementById("harga-mulai").innerText = "Gagal memuat server API";
+    }
+  }
+
+  function bukaModalInfoKontak() {
+    document.getElementById("modal-info-kontak").style.display = "flex";
+  }
+
+  function tutupModalInfoKontak() {
+    document.getElementById("modal-info-kontak").style.display = "none";
+  }
+
+  function bukaModalLegal(tipe) {
+    const konten = {
+      privasi: {
+        judul: "Kebijakan Privasi",
+        isi: `
+          <h4>1. Data yang Dikumpulkan</h4>
+          <p>Xentrix Project hanya mengumpulkan data minimal meliputi <strong>Nama</strong>, <strong>Alamat Gmail</strong>, <strong>Username Aplikasi</strong>, serta pencatatan <strong>Alamat IP</strong> untuk keamanan sistem.</p>
+          <h4>2. Keamanan & Kerahasiaan</h4>
+          <p>Kami tidak pernah membagikan data akun pelanggan kepada pihak ketiga mana pun.</p>
+        `
+      },
+      legal: {
+        judul: "Syarat, Ketentuan & Legal",
+        isi: `
+          <h4>1. Ketentuan Produk Digital</h4>
+          <p>Seluruh produk berupa akses Role & Akun APK Xentrix merupakan produk digital. Pastikan username yang diinput pada checkout sudah benar.</p>
+          <h4>2. Kebijakan Refund</h4>
+          <p>Transaksi yang sudah terverifikasi (status <strong>SUKSES</strong>) tidak dapat dibatalkan atau di-refund.</p>
+        `
+      },
+      faq: {
+        judul: "Panduan Order & FAQ",
+        isi: `
+          <h4>Cara Order / Klaim Trial</h4>
+          <p>Klik kartu <strong>Harga Role Apk Xentrix</strong> → pilih paket → isi data → konfirmasi dan tunggu konfirmasi pembayaran selesai.</p>
+          <h4>Melihat Kode Referral & Profil</h4>
+          <p>Klik menu <strong>Profil</strong> di navigasi bawah untuk melihat detail akun dan menyalin kode referral milikmu.</p>
+        `
+      }
+    };
+
+    const data = konten[tipe];
+    if (!data) return;
+    document.getElementById("modal-legal-title").innerText = data.judul;
+    document.getElementById("modal-legal-content").innerHTML = data.isi;
+    document.getElementById("modal-legal").style.display = "flex";
+  }
+
+  function tutupModalLegal() { document.getElementById("modal-legal").style.display = "none"; }
+
+  function tampilkanHalaman(idHalaman) {
+    ["catalog-page", "trial-checkout-page", "paid-checkout-page", "status-page", "history-page", "profile-page"].forEach(id => {
+      document.getElementById(id).style.display = (id === idHalaman) ? "block" : "none";
+    });
+    document.getElementById("nav-store").classList.toggle("active-nav", idHalaman === "catalog-page");
+    document.getElementById("nav-history").classList.toggle("active-nav", idHalaman === "history-page");
+    document.getElementById("nav-profile").classList.toggle("active-nav", idHalaman === "profile-page");
+
+    if (idHalaman !== "status-page" && intervalCekStatus) clearInterval(intervalCekStatus);
+  }
+
+  function bukaModalHarga() {
+    if (appConfig && !appConfig.tokoBuka) {
+      return alert("Maaf, layanan sedang tutup sementara.");
+    }
+    document.getElementById("modal-harga").style.display = "flex";
+  }
+  function tutupModalHarga() { document.getElementById("modal-harga").style.display = "none"; }
+
+  function keHalamanCheckout() {
+    if (!paketTerpilih) return;
+    tutupModalHarga();
+
+    if (paketTerpilih.isTrial) {
+      document.getElementById("trial-info-desc").innerText = paketTerpilih.deskripsi;
+      tampilkanHalaman("trial-checkout-page");
+    } else {
+      document.getElementById("checkout-role-name").innerText = paketTerpilih.nama;
+      document.getElementById("checkout-total").innerText = formatRupiah(paketTerpilih.harga);
+      tampilkanHalaman("paid-checkout-page");
+    }
+  }
+
+  function simpanIdKeRiwayatLokal(orderId) {
+    let daftarId = JSON.parse(localStorage.getItem("xentrix_buyer_orders") || "[]");
+    if (!daftarId.includes(orderId)) {
+      daftarId.unshift(orderId);
+      localStorage.setItem("xentrix_buyer_orders", JSON.stringify(daftarId));
+    }
+  }
+
+  async function kirimRequestTrial() {
+    const usernameApk = document.getElementById("trial-username").value.trim();
+    if (!usernameApk) return alert("Harap isi Nama Username untuk login ke aplikasi!");
+
+    const btn = document.getElementById("btn-submit-trial");
+    btn.disabled = true;
+    btn.innerText = "Memproses permintaan...";
+
+    try {
+      const data = await apiRequest("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isTrial: true, roleNama: "FREE TRIAL", harga: 0, usernameApk })
+      });
+
+      if (data.success) {
+        simpanIdKeRiwayatLokal(data.order.id);
+        tampilkanStatusPesanan(data.order);
+      } else {
+        alert(data.message || "Gagal mengajukan Free Trial.");
+      }
+    } catch (err) {
+      alert("Gagal terhubung ke server API!");
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Konfirmasi Free Trial";
+    }
+  }
+
+  async function kirimRequestPaid() {
+    const usernameApk = document.getElementById("paid-username").value.trim();
+    const kontak = document.getElementById("paid-contact").value.trim();
+
+    if (!usernameApk) return alert("Harap isi Username untuk login ke aplikasi!");
+    if (!kontak) return alert("Harap isi Nomor WhatsApp / Kontak aktif!");
+
+    const btn = document.getElementById("btn-submit-paid");
+    btn.disabled = true;
+    btn.innerText = "Memproses konfirmasi...";
+
+    try {
+      const data = await apiRequest("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          isTrial: false,
+          roleNama: paketTerpilih.nama,
+          harga: paketTerpilih.harga,
+          usernameApk,
+          kontak,
+          metodeBayar: "QRIS"
+        })
+      });
+
+      if (data.success) {
+        simpanIdKeRiwayatLokal(data.order.id);
+        tampilkanStatusPesanan(data.order);
+      } else {
+        alert(data.message || "Gagal mengirim pesanan.");
+      }
+    } catch (err) {
+      alert("Gagal terhubung ke server API!");
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Konfirmasi Pembayaran";
+    }
+  }
+
+  function tampilkanStatusPesanan(order) {
+    document.getElementById("track-id").innerText = order.id;
+    document.getElementById("track-role").innerText = order.roleNama;
+    document.getElementById("track-username").innerText = order.usernameApk || "-";
+    document.getElementById("track-harga").innerText = formatRupiah(order.harga);
+    document.getElementById("buyer-delivery-box").style.display = "none";
+    document.getElementById("buyer-rejected-box").style.display = "none";
+    
+    updateTampilanOrderPembeli(order);
+    tampilkanHalaman("status-page");
+
+    intervalCekStatus = setInterval(async () => {
+      try {
+        const data = await apiRequest(`/api/orders/${order.id}`);
+        if (data.order) {
+          updateTampilanOrderPembeli(data.order);
+          if (data.order.status !== "PENDING") clearInterval(intervalCekStatus);
+        }
+      } catch (e) {}
+    }, 3000);
+  }
+
+  function updateTampilanOrderPembeli(order) {
+    const el = document.getElementById("track-status");
+    el.className = `status-badge status-${order.status}`;
+
+    if (order.status === "PENDING") {
+      el.innerText = "Sedang Konfirmasi pembayaran";
+    } else if (order.status === "ACC" || order.status === "SUKSES") {
+      el.innerText = "SUKSES";
+      document.getElementById("buyer-delivery-box").style.display = "block";
+      document.getElementById("buyer-delivery-text").innerText = order.dataAdmin || "Akun aktif. Silakan login di APK Xentrix.";
+    } else if (order.status === "DITOLAK") {
+      el.innerText = "DITOLAK";
+      document.getElementById("buyer-rejected-box").style.display = "block";
+      document.getElementById("buyer-rejected-reason").innerText = order.dataAdmin || "Permintaan ditolak.";
+    }
+  }
+
+  function salinTeksLangsung(teks) {
+    navigator.clipboard.writeText(teks);
+    alert("Berhasil disalin: " + teks);
+  }
+
+  function bukaHalamanRiwayat() {
+    document.getElementById("history-search-input").value = "";
+    tampilkanHalaman("history-page");
+    muatRiwayatPelanggan();
+  }
+
+  async function muatRiwayatPelanggan(keyword = "") {
+    const container = document.getElementById("history-list");
+    container.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">Memuat riwayat...</p>`;
+
+    const idsTersimpan = JSON.parse(localStorage.getItem("xentrix_buyer_orders") || "[]");
+
+    try {
+      const data = await apiRequest("/api/orders/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: idsTersimpan, keyword })
+      });
+
+      if (!data.orders || data.orders.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-muted); font-size: 13px;">Belum ada riwayat pesanan pada akun ini.</p>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      data.orders.forEach(order => {
+        const div = document.createElement("div");
+        div.className = "order-item";
+
+        const isSukses = order.status === "ACC" || order.status === "SUKSES";
+        const labelStatus = isSukses
+          ? "SUKSES"
+          : (order.status === "PENDING" ? "Sedang Konfirmasi pembayaran" : order.status);
+
+        let blokDataAdmin = "";
+        if (isSukses) {
+          const dataAman = (order.dataAdmin || "Akun aktif.").replace(/`/g, "\\`");
+          blokDataAdmin = `
+            <div style="margin-top: 8px;">
+              <span style="font-size: 12px; color: var(--success); font-weight: 800;">✓ SUKSES — Detail Data Akun:</span>
+              <div class="sent-data-preview">${order.dataAdmin || "Akun aktif."}</div>
+              <button class="btn btn-acc" style="width: 100%; margin-top: 8px; padding: 7px;" onclick="salinTeksLangsung(\`${dataAman}\`)">Salin Data</button>
+            </div>
+          `;
+        } else if (order.status === "DITOLAK") {
+          blokDataAdmin = `
+            <div style="margin-top: 8px; font-size: 12px; color: var(--danger);">
+              Alasan ditolak: <strong>${order.dataAdmin || "Permintaan ditolak."}</strong>
+            </div>
+          `;
+        } else {
+          blokDataAdmin = `
+            <div style="margin-top: 6px; font-size: 12px; color: var(--warning); font-weight: 700;">
+              ⏳ Sedang Konfirmasi pembayaran...
+            </div>
+          `;
+        }
+
+        div.innerHTML = `
+          <div class="order-top">
+            <strong style="font-size: 13.5px;">${order.id} - ${order.roleNama}</strong>
+            <span class="status-badge status-${order.status}">${labelStatus}</span>
+          </div>
+          <div class="order-meta">
+            Username APK: <strong style="color: var(--accent-blue);">${order.usernameApk || '-'}</strong><br>
+            Biaya: <strong style="color: var(--success);">${formatRupiah(order.harga)}</strong> • ${order.waktu}
+          </div>
+          ${blokDataAdmin}
+        `;
+        container.appendChild(div);
+      });
+    } catch (err) {
+      container.innerHTML = `<p style="color: var(--danger); font-size: 13px;">Gagal memuat riwayat dari server API.</p>`;
+    }
+  }
+
+  function cariRiwayatManual() {
+    const keyword = document.getElementById("history-search-input").value.trim();
+    muatRiwayatPelanggan(keyword);
+  }
+
+  cekSesiAwal();
+</script>
+
+</body>
+</html>
